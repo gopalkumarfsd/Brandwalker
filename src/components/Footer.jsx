@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('');   
   const [subscribed, setSubscribed] = useState(false);
 
   const handleSubscribe = (e) => {
@@ -18,7 +18,7 @@ export default function Footer() {
     if (email.trim()) {
       setSubscribed(true);
       setEmail('');
-      setTimeout(() => setSubscribed(false), 3000);
+      setTimeout(() => setSubscribed(false), 3000);  
     }
   };
 
@@ -31,9 +31,11 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
 
         {/* 1. Main 4-Column Footer Layout */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pb-12 border-b border-slate-800/80">
           
           {/* Column 1: Brand Info & Social */}
+
           <div className="space-y-4">
             <div className="flex items-center gap-2 cursor-pointer" onClick={scrollToTop}>
               <span className="text-xl font-black tracking-wider text-blue-500">BRAND</span>

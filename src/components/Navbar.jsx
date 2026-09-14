@@ -6,8 +6,9 @@ export default function Navbar() {
 
   return (
     <header className="fixed w-full top-0 z-50">
-      {/* Top Announcement / Info Bar */}
-      <div className="bg-slate-950 text-gray-300 text-xs py-2 px-4 hidden md:block border-b border-gray-800">
+      {/* Top Announcement / Info Bar */}   
+
+      {/* <div className="bg-slate-950 text-gray-300 text-xs py-2 px-4 hidden md:block border-b border-gray-800">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-1.5"><Phone size={13} className="text-blue-400" /> +91 98765 43210</span>
@@ -18,17 +19,17 @@ export default function Navbar() {
             India's Premier Exhibition & Expo Agency
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* Main Navbar */}
+      {/* Main Navbar */}    
       <nav className="bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
+          <div className="flex justify-between h-19 items-center">
             
             {/* Logo */}
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <span className="text-2xl font-black tracking-wider text-blue-600">BRAND</span>
-              <span className="text-2xl font-black tracking-wider text-slate-900">WAKERS</span>
+              <span className="text-3xl font-black tracking-wider text-blue-600">BRAND</span>
+              <span className="text-3xl font-black tracking-wider text-slate-900">WAKERS</span>
             </div>
 
             {/* Desktop Menu */}

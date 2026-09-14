@@ -24,7 +24,7 @@ export default function About() {
 
           {/* Details */}
           <div>
-            <span className="text-blue-600 font-bold uppercase text-xs tracking-wider">Who We Are</span>
+            <span className="text-blue-700 font-bold uppercase text-sm tracking-wider">Who We Are</span>
             <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 mt-2 leading-tight">
               Crafting Immersive Trade Show Experiences
             </h2>

@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle2, Calendar } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ 
@@ -7,11 +13,44 @@ export default function Contact() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
+  try {
+    const response = await fetch(
+      "http://localhost:5001/api/inquiries",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    console.log("Inquiry saved:", data);
+
+    setIsSubmitted(true);
+
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      expoName: "",
+      stallSize: "",
+      message: "",
+    });
+  } catch (error) {
+    console.error("Submit Error:", error);
+    alert("Unable to submit inquiry. Please try again.");
+  }
+};
   return (
     <section id="contact" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,37 +113,114 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">Your Name / Company</label>
-                  <input 
+                  {/* <input 
                     type="text" required placeholder="Company Name / Contact Person" 
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                  />
+                  /> */}
+
+                  <input
+                     type="text"
+                     required
+                     placeholder="Company Name / Contact Person"
+                     value={formData.name}
+                     onChange={(e) =>
+                     setFormData({
+                      ...formData,
+                     name: e.target.value,
+                        })
+                     }
+                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
+                    />
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-                    <input type="email" required placeholder="name@company.com" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" />
+                      <input
+                        type="email"
+                         required
+                        placeholder="name@company.com"
+                       value={formData.email}
+                       onChange={(e) =>
+                        setFormData({
+                       ...formData,
+                      email: e.target.value,
+                        })
+                        }
+                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
+                      />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
-                    <input type="tel" required placeholder="+91 00000 00000" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" />
-                  </div>
+                    {/* <input type="tel" required placeholder="+91 00000 00000" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" /> */}
+
+                         <input
+                          type="tel"
+                          required
+                          placeholder="+91 00000 00000"
+                          value={formData.phone}
+                          onChange={(e) =>
+                          setFormData({
+                          ...formData,
+                          phone: e.target.value,
+                          })
+                           }
+                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
+                         />
+                  </div>  
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Expo / Event Name</label>
-                    <input type="text" placeholder="e.g. Auto Expo 2026" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" />
-                  </div>
+                    {/* <input type="text" placeholder="e.g. Auto Expo 2026" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" /> */}
+                     <input
+                       type="text"
+                       placeholder="e.g. Auto Expo 2026"
+                       value={formData.expoName}
+                       onChange={(e) =>
+                       setFormData({
+                       ...formData,
+                       expoName: e.target.value,
+                        })
+                        }
+                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
+                        />
+                   
+                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-1">Stall Size (e.g. 6x3m)</label>
-                    <input type="text" placeholder="e.g. 18 Sq Meters" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" />
+                    {/* <input type="text" placeholder="e.g. 18 Sq Meters" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" /> */}
+                    <input
+                      type="text"
+                      placeholder="e.g. 18 Sq Meters"
+                      value={formData.stallSize}
+                      onChange={(e) =>
+                      setFormData({
+                      ...formData,
+                      stallSize: e.target.value,
+                       })
+                        }
+                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
+                      />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1">Specific Requirements</label>
-                  <textarea rows="3" placeholder="Mention budget, sides open, LED screen requirement, etc." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"></textarea>
+                  {/* <textarea rows="3" placeholder="Mention budget, sides open, LED screen requirement, etc." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"></textarea> */}
+                  <textarea
+                   rows="3"
+                   placeholder="Mention budget, sides open, LED screen requirement, etc."
+                   value={formData.message}
+                   onChange={(e) =>
+                   setFormData({
+                    ...formData,
+                   message: e.target.value,
+                   })
+                   }
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
+                  ></textarea>
                 </div>
 
                 <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition flex items-center justify-center gap-2">

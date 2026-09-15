@@ -33,14 +33,14 @@ const createInquiry = async (req, res) => {
       data: inquiry,
     });
   } catch (error) {
-    console.error(error);
+    console.error(error);        
 
     res.status(500).json({
       success: false,
       message: "Server error",
     });
   }
-};
+}; 
 
 const getInquiries = async (req, res) => {
   try {

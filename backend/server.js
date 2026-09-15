@@ -4,6 +4,7 @@ const cors= require ("cors");
 require("dotenv").config();
 
 const inquiryRoutes = require("./routes/inquiry.routes");
+const subscriberRoutes = require("./routes/subscriber.routes");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/inquiries", inquiryRoutes);
+app.use("/api/subscribers", subscriberRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

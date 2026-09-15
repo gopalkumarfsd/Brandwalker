@@ -13,14 +13,45 @@ export default function Footer() {
   const [email, setEmail] = useState('');   
   const [subscribed, setSubscribed] = useState(false);
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail('');
-      setTimeout(() => setSubscribed(false), 3000);  
+    const handleSubscribe = async (e) => {
+     e.preventDefault();
+
+  if (!email.trim()) return;
+
+  try {
+    const response = await fetch(
+      "http://localhost:5001/api/subscribers",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Subscription failed");
     }
-  };
+
+    console.log("Subscription Response:", data);
+
+    setSubscribed(true);
+    setEmail("");
+
+    setTimeout(() => {
+      setSubscribed(false);
+    }, 3000);
+  } catch (error) {
+    console.error("Subscribe Error:", error);
+
+    alert(error.message);
+  }
+};
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -144,7 +175,7 @@ export default function Footer() {
                 <CheckCircle2 size={16} /> Subscribed Successfully!
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2 w-full md:w-auto">
+              < form onSubmit={handleSubscribe} className="flex gap-2 w-full md:w-auto">
                 <input 
                   type="email" 
                   value={email}

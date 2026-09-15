@@ -11,4 +11,4 @@ router.post("/", createInquiry);
 
 router.get("/", getInquiries);
 
-module.exports = router;           
+module.exports = router;        

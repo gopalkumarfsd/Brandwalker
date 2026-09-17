@@ -39,10 +39,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-950 text-white">
 
-      {/* =====================================
-          TOP CTA
-      ====================================== */}
-
+      {/* TOP CTA */}
       <div className="border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="bg-blue-600 rounded-3xl px-6 sm:px-10 lg:px-14 py-10 sm:py-12">
@@ -78,18 +75,12 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* =====================================
-          MAIN FOOTER
-      ====================================== */}
-
+      {/* MAIN FOOTER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
 
-          {/* =================================
-              BRAND
-          ================================== */}
-
+          {/* BRAND */}
           <div className="lg:col-span-4">
 
             <a
@@ -111,14 +102,10 @@ export default function Footer() {
               brands across India.
             </p>
 
-            {/* =================================
-                SOCIAL MEDIA
-            ================================== */}
-
+            {/* SOCIAL MEDIA */}
             <div className="flex flex-wrap items-center gap-3 mt-7">
 
               {/* FACEBOOK */}
-
               <a
                 href="https://www.facebook.com/expobrandwakers/"
                 aria-label="Facebook"
@@ -138,7 +125,6 @@ export default function Footer() {
               </a>
 
               {/* INSTAGRAM */}
-
               <a
                 href="https://www.instagram.com/expobrandwakers/"
                 aria-label="Instagram"
@@ -180,7 +166,6 @@ export default function Footer() {
               </a>
 
               {/* LINKEDIN */}
-
               <a
                 href="https://www.linkedin.com/company/expobrandwakers/"
                 aria-label="LinkedIn"
@@ -200,7 +185,6 @@ export default function Footer() {
               </a>
 
               {/* YOUTUBE */}
-
               <a
                 href="https://www.youtube.com/@expobrandwakers"
                 aria-label="YouTube"
@@ -220,7 +204,6 @@ export default function Footer() {
               </a>
 
               {/* PINTEREST */}
-
               <a
                 href="https://in.pinterest.com/expobrandwakers/"
                 aria-label="Pinterest"
@@ -242,10 +225,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* =================================
-              SERVICES
-          ================================== */}
-
+          {/* SERVICES */}
           <div className="lg:col-span-2">
 
             <h3 className="text-sm font-bold uppercase tracking-wider">
@@ -311,10 +291,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* =================================
-              COMPANY
-          ================================== */}
-
+          {/* COMPANY */}
           <div className="lg:col-span-2">
 
             <h3 className="text-sm font-bold uppercase tracking-wider">
@@ -361,29 +338,26 @@ export default function Footer() {
 
               <li>
                 <a
-                  href="#"
-                  className="text-slate-400 hover:text-white transition"
-                >
+                  href="/privacy-policy"
+                  className="hover:text-blue-400 transition"
+                   >
                   Privacy Policy
                 </a>
               </li>
 
               <li>
-                <a
-                  href="#"
-                  className="text-slate-400 hover:text-white transition"
-                >
-                  Terms & Conditions
-                </a>
+                  <a
+                   href="/terms-and-conditions"
+                   className="hover:text-blue-400 transition"
+                     >
+                   Terms & Conditions
+                   </a>
               </li>
 
             </ul>
           </div>
 
-          {/* =================================
-              CONTACT
-          ================================== */}
-
+          {/* CONTACT */}
           <div className="lg:col-span-4">
 
             <h3 className="text-sm font-bold uppercase tracking-wider">
@@ -393,7 +367,6 @@ export default function Footer() {
             <div className="mt-5 space-y-4">
 
               {/* PHONE */}
-
               <a
                 href="tel:+919876543210"
                 className="flex items-start gap-3 group"
@@ -417,7 +390,6 @@ export default function Footer() {
               </a>
 
               {/* EMAIL */}
-
               <a
                 href="mailto:info@brandwakers.com"
                 className="flex items-start gap-3 group"
@@ -440,41 +412,48 @@ export default function Footer() {
                 </div>
               </a>
 
-              {/* LOCATION */}
-
-              <div className="flex items-start gap-3">
-
-                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
+              {/* LOCATION - CLICKABLE */}
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Pearls+Omaxe+Tower+Netaji+Subhash+Place+Pitampura+Delhi+110034"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Pearls Omaxe Tower location in Google Maps"
+                className="flex items-start gap-3 group cursor-pointer"
+              >
+                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-blue-600 transition-all">
                   <MapPin
                     size={17}
-                    className="text-blue-400"
+                    className="text-blue-400 group-hover:text-white transition"
                   />
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-500">
-                    Service Locations
+                  <p className="text-xs text-slate-500 group-hover:text-blue-400 transition">
+                    Our Office
                   </p>
 
-                  <p className="text-sm font-semibold text-slate-200">
-                    Delhi NCR, Mumbai & Bangalore
+                  <p className="text-sm font-semibold text-slate-200 group-hover:text-blue-400 transition leading-relaxed">
+                    Pearls Omaxe Tower
                   </p>
 
-                  <p className="text-xs text-slate-500 mt-1">
-                    Projects across India
+                  <p className="text-xs text-slate-400 group-hover:text-slate-300 transition leading-relaxed mt-1">
+                    Netaji Subhash Place, Pitampura
+                    <br />
+                    New Delhi - 110034
+                  </p>
+
+                  <p className="text-xs text-blue-400 font-semibold mt-2">
+                    Click to view on Google Maps →
                   </p>
                 </div>
-
-              </div>
+              </a>
 
             </div>
           </div>
+
         </div>
 
-        {/* =====================================
-            NEWSLETTER
-        ====================================== */}
-
+        {/* NEWSLETTER */}
         <div className="mt-14 pt-8 border-t border-white/10">
 
           <div className="grid lg:grid-cols-2 gap-6 items-center">
@@ -533,10 +512,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* =====================================
-          BOTTOM BAR
-      ====================================== */}
-
+      {/* BOTTOM BAR */}
       <div className="border-t border-white/10">
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">

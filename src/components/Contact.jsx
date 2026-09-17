@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Mail,
   Phone,
@@ -19,14 +20,12 @@ const initialFormData = {
 };
 
 export default function Contact() {
-  const [formData, setFormData] =
-    useState(initialFormData);
+  const navigate = useNavigate(); 
+  const [formData, setFormData] = useState(initialFormData);
 
-  const [isSubmitted, setIsSubmitted] =
-    useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [isLoading, setIsLoading] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState("");
 
@@ -54,8 +53,8 @@ export default function Contact() {
 
       console.log("Inquiry saved:", data);
 
-      setIsSubmitted(true);
       setFormData(initialFormData);
+      navigate("/thank-you");
     } catch (error) {
       console.error("Submit Error:", error);
 
@@ -79,6 +78,7 @@ export default function Contact() {
 
           {/* LEFT CONTENT */}
           <div className="lg:pt-6">
+
             <span className="text-blue-600 font-bold uppercase text-xs tracking-widest">
               Let's Work Together
             </span>
@@ -137,26 +137,38 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Location */}
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
+              {/* LOCATION - CLICKABLE */}
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Pearls+Omaxe+Tower+Netaji+Subhash+Place+Pitampura+Delhi+110034"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Pearls Omaxe Tower location in Google Maps"
+                className="flex items-start gap-4 group cursor-pointer"
+              >
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-all duration-200">
                   <MapPin size={22} />
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-500">
-                    Service Locations
+                  <h4 className="text-sm font-semibold text-gray-500 group-hover:text-blue-600 transition">
+                    Our Office
                   </h4>
 
-                  <p className="font-bold text-gray-900">
-                    Delhi NCR & Mumbai
+                  <p className="font-bold text-gray-900 group-hover:text-blue-600 transition">
+                    Pearls Omaxe Tower
                   </p>
 
-                  <p className="text-sm text-gray-500 mt-1">
-                    Exhibition projects across India
+                  <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                    Netaji Subhash Place, Pitampura
+                    <br />
+                    New Delhi - 110034
+                  </p>
+
+                  <p className="text-xs text-blue-600 font-semibold mt-2">
+                    Click to view on Google Maps →
                   </p>
                 </div>
-              </div>
+              </a>
 
               {/* WhatsApp CTA */}
               <a
@@ -168,6 +180,7 @@ export default function Contact() {
                 <MessageCircle size={18} />
                 Chat on WhatsApp
               </a>
+
             </div>
           </div>
 
@@ -175,8 +188,10 @@ export default function Contact() {
           <div className="bg-gray-50 p-6 sm:p-10 rounded-3xl border border-gray-100 shadow-sm">
 
             {isSubmitted ? (
+
               /* SUCCESS STATE */
               <div className="text-center py-12">
+
                 <div className="flex justify-center">
                   <div className="p-4 bg-green-50 rounded-full">
                     <CheckCircle2 className="text-green-600 h-14 w-14" />
@@ -195,15 +210,16 @@ export default function Contact() {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setIsSubmitted(false)
-                  }
+                  onClick={() => setIsSubmitted(false)}
                   className="mt-7 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold text-sm transition"
                 >
                   Submit Another Requirement
                 </button>
+
               </div>
+
             ) : (
+
               <form
                 onSubmit={handleSubmit}
                 className="space-y-5"
@@ -211,6 +227,7 @@ export default function Contact() {
 
                 {/* FORM HEADER */}
                 <div className="mb-2">
+
                   <h3 className="text-2xl font-bold text-gray-900">
                     Tell Us About Your Project
                   </h3>
@@ -219,6 +236,7 @@ export default function Contact() {
                     Fill in the details below and our team
                     will get in touch with you.
                   </p>
+
                 </div>
 
                 {/* ERROR */}
@@ -233,6 +251,7 @@ export default function Contact() {
 
                 {/* NAME */}
                 <div>
+
                   <label
                     htmlFor="name"
                     className="block text-sm font-semibold text-gray-700 mb-1.5"
@@ -250,12 +269,14 @@ export default function Contact() {
                     placeholder="Company Name / Contact Person"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
                   />
+
                 </div>
 
                 {/* EMAIL + PHONE */}
                 <div className="grid sm:grid-cols-2 gap-4">
 
                   <div>
+
                     <label
                       htmlFor="email"
                       className="block text-sm font-semibold text-gray-700 mb-1.5"
@@ -273,9 +294,11 @@ export default function Contact() {
                       placeholder="name@company.com"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
                     />
+
                   </div>
 
                   <div>
+
                     <label
                       htmlFor="phone"
                       className="block text-sm font-semibold text-gray-700 mb-1.5"
@@ -293,6 +316,7 @@ export default function Contact() {
                       placeholder="+91 00000 00000"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
                     />
+
                   </div>
 
                 </div>
@@ -301,6 +325,7 @@ export default function Contact() {
                 <div className="grid sm:grid-cols-2 gap-4">
 
                   <div>
+
                     <label
                       htmlFor="expoName"
                       className="block text-sm font-semibold text-gray-700 mb-1.5"
@@ -317,9 +342,11 @@ export default function Contact() {
                       placeholder="e.g. Auto Expo"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
                     />
+
                   </div>
 
                   <div>
+
                     <label
                       htmlFor="stallSize"
                       className="block text-sm font-semibold text-gray-700 mb-1.5"
@@ -336,12 +363,14 @@ export default function Contact() {
                       placeholder="e.g. 6 x 3 meters"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
                     />
+
                   </div>
 
                 </div>
 
                 {/* MESSAGE */}
                 <div>
+
                   <label
                     htmlFor="message"
                     className="block text-sm font-semibold text-gray-700 mb-1.5"
@@ -358,6 +387,7 @@ export default function Contact() {
                     placeholder="Tell us about your stall design, branding, LED screen, meeting room, open sides, budget, etc."
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition resize-none"
                   />
+
                 </div>
 
                 {/* SUBMIT */}
@@ -383,6 +413,7 @@ export default function Contact() {
 
               </form>
             )}
+
           </div>
         </div>
       </div>

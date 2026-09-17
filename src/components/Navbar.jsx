@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Menu,
   X,
@@ -6,128 +6,178 @@ import {
   Phone,
 } from "lucide-react";
 
-const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Our Work", href: "#portfolio" },
-  { label: "Process", href: "#process" },
-];
-
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const navLinks = [
+    { name: "Home", href: "#home" },
+    { name: "About", href: "#about" },
+    { name: "Services", href: "#services" },
+    { name: "Portfolio", href: "#portfolio" },
+    { name: "Process", href: "#process" },
+    { name: "Testimonials", href: "#testimonials" },
+    { name: "Contact", href: "#contact" },
+  ];
+
+  const handleNavClick = () => {
+    setIsOpen(false);
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
-      <nav
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-        aria-label="Main navigation"
-      >
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-slate-200"
+          : "bg-slate-950/80 backdrop-blur-md border-b border-white/10"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-20 flex items-center justify-between">
+
           {/* LOGO */}
           <a
             href="#home"
-            onClick={closeMenu}
-            className="flex items-center shrink-0"
-            aria-label="Brand Wakers Home"
+            onClick={handleNavClick}
+            className="flex items-center gap-3 group"
           >
-            <span className="text-2xl sm:text-3xl font-black tracking-tight">
-              <span className="text-blue-600">BRAND</span>
-              <span className="text-slate-900"> WAKERS</span>
-            </span>
+            <div
+              className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg transition ${
+                scrolled
+                  ? "bg-blue-600 text-white"
+                  : "bg-blue-500 text-white"
+              }`}
+            >
+              B
+            </div>
+
+            <div className="leading-tight">
+              <div
+                className={`text-lg font-black tracking-tight transition ${
+                  scrolled ? "text-slate-900" : "text-white"
+                }`}
+              >
+                BRANDWALKER
+              </div>
+
+              <div
+                className={`text-[10px] font-semibold tracking-[0.18em] transition ${
+                  scrolled ? "text-slate-500" : "text-slate-300"
+                }`}
+              >
+                EXHIBITION & EVENTS
+              </div>
+            </div>
           </a>
 
-          {/* DESKTOP NAVIGATION */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* DESKTOP NAV */}
+          <nav className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <a
-                key={link.href}
+                key={link.name}
                 href={link.href}
-                className="relative text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors duration-200 group"
+                className={`text-sm font-semibold transition-colors ${
+                  scrolled
+                    ? "text-slate-600 hover:text-blue-600"
+                    : "text-slate-200 hover:text-white"
+                }`}
               >
-                {link.label}
-
-                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full" />
+                {link.name}
               </a>
             ))}
-          </div>
+          </nav>
 
           {/* DESKTOP CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <a
               href="tel:+919876543210"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors"
-              aria-label="Call Brand Wakers"
+              className={`inline-flex items-center gap-2 text-sm font-semibold transition ${
+                scrolled
+                  ? "text-slate-700 hover:text-blue-600"
+                  : "text-slate-200 hover:text-white"
+              }`}
             >
-              <Phone size={17} />
-              <span>Call Us</span>
+              <Phone size={16} />
+              <span>+91 98765 43210</span>
             </a>
 
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 transition-all duration-200"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-600/20"
             >
-              Book Expo Stall
-              <ArrowRight size={17} />
+              Get a Quote
+              <ArrowRight size={16} />
             </a>
           </div>
 
           {/* MOBILE MENU BUTTON */}
           <button
             type="button"
-            onClick={() => setIsMenuOpen((current) => !current)}
-            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-200 text-slate-800 hover:bg-slate-50 transition"
-            aria-label={
-              isMenuOpen ? "Close navigation menu" : "Open navigation menu"
-            }
-            aria-expanded={isMenuOpen}
+            onClick={() => setIsOpen(!isOpen)}
+            className={`lg:hidden p-2 rounded-lg transition ${
+              scrolled
+                ? "text-slate-900 hover:bg-slate-100"
+                : "text-white hover:bg-white/10"
+            }`}
+            aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={23} /> : <Menu size={23} />}
+            {isOpen ? <X size={25} /> : <Menu size={25} />}
           </button>
         </div>
+      </div>
 
-        {/* MOBILE MENU */}
-        {isMenuOpen && (
-          <div className="lg:hidden border-t border-slate-100 py-4">
-            <div className="flex flex-col">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeMenu}
-                  className="px-3 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition"
-                >
-                  {link.label}
-                </a>
-              ))}
+      {/* MOBILE MENU */}
+      {isOpen && (
+        <div className="lg:hidden bg-white border-t border-slate-200 shadow-xl">
+          <div className="px-4 py-5 space-y-1">
 
-              <div className="mt-3 pt-4 border-t border-slate-100 space-y-3">
-                <a
-                  href="tel:+919876543210"
-                  onClick={closeMenu}
-                  className="flex items-center justify-center gap-2 w-full border border-slate-200 text-slate-800 px-4 py-3 rounded-xl text-sm font-semibold hover:bg-slate-50 transition"
-                >
-                  <Phone size={17} />
-                  Call Us
-                </a>
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={handleNavClick}
+                className="block px-4 py-3 rounded-lg text-slate-700 font-semibold hover:bg-slate-50 hover:text-blue-600 transition"
+              >
+                {link.name}
+              </a>
+            ))}
 
-                <a
-                  href="#contact"
-                  onClick={closeMenu}
-                  className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl text-sm font-bold transition"
-                >
-                  Book Expo Stall
-                  <ArrowRight size={17} />
-                </a>
-              </div>
+            <div className="pt-4 mt-3 border-t border-slate-200 space-y-3">
+
+              <a
+                href="tel:+919876543210"
+                onClick={handleNavClick}
+                className="flex items-center gap-2 px-4 py-3 text-slate-700 font-semibold"
+              >
+                <Phone size={17} />
+                +91 98765 43210
+              </a>
+
+              <a
+                href="#contact"
+                onClick={handleNavClick}
+                className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-bold transition"
+              >
+                Get a Free Quote
+                <ArrowRight size={17} />
+              </a>
+
             </div>
           </div>
-        )}
-      </nav>
+        </div>
+      )}
     </header>
   );
 }

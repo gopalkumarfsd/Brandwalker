@@ -16,10 +16,10 @@ const router = express.Router();
 // Public - website visitors can submit inquiry
 router.post("/", createInquiry);
 
-// Admin only - inquiries dekh sakta hai
+// Admin only - inquiries
 router.get("/", protect, adminOnly, getInquiries);
 
-// Admin only - inquiry delete kar sakta hai
+// Admin only - inquiry delete 
 router.delete("/:id", protect, adminOnly, deleteInquiry);
 
 module.exports = router;

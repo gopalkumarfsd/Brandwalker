@@ -5,218 +5,385 @@ import {
   MapPin,
   Send,
   CheckCircle2,
+  MessageCircle,
 } from "lucide-react";
 import { submitInquiry } from "../services/api";
 
-export default function Contact() {
-  const [formData, setFormData] = useState({ 
-    name: '', email: '', phone: '', expoName: '', stallSize: '', message: '' 
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const data = await submitInquiry(formData);
-
-    console.log("Inquiry saved:", data);
-
-    setIsSubmitted(true);
-
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      expoName: "",
-      stallSize: "",
-      message: "",
-    });
-  } catch (error) {
-    console.error("Submit Error:", error);
-    alert(error.message);
-  }
+const initialFormData = {
+  name: "",
+  email: "",
+  phone: "",
+  expoName: "",
+  stallSize: "",
+  message: "",
 };
-  
+
+export default function Contact() {
+  const [formData, setFormData] =
+    useState(initialFormData);
+
+  const [isSubmitted, setIsSubmitted] =
+    useState(false);
+
+  const [isLoading, setIsLoading] =
+    useState(false);
+
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }));
+
+    if (error) {
+      setError("");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const data = await submitInquiry(formData);
+
+      console.log("Inquiry saved:", data);
+
+      setIsSubmitted(true);
+      setFormData(initialFormData);
+    } catch (error) {
+      console.error("Submit Error:", error);
+
+      setError(
+        error.message ||
+          "Something went wrong. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <section id="contact" className="py-24 bg-white">
+    <section
+      id="contact"
+      className="py-24 bg-white"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          
-          <div>
-            <span className="text-blue-600 font-bold uppercase text-xs tracking-wider">Book Your Stall</span>
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-gray-900 mt-2">Planning Your Next Expo Exhibition?</h2>
-            <p className="mt-4 text-gray-600 text-lg leading-relaxed">
-              Share your upcoming trade show details, stall dimensions, and requirements. Our team will send custom 3D design concepts and pricing within 24 hours.
+
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+          {/* LEFT CONTENT */}
+          <div className="lg:pt-6">
+            <span className="text-blue-600 font-bold uppercase text-xs tracking-widest">
+              Let's Work Together
+            </span>
+
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-gray-900 mt-2 leading-tight">
+              Planning Your Next Exhibition?
+            </h2>
+
+            <p className="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed max-w-xl">
+              Share your exhibition details, stall size,
+              event requirements, and ideas with us. Our
+              team will review your requirement and get
+              back to you with the next steps.
             </p>
 
+            {/* Contact Details */}
             <div className="mt-10 space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                  <Phone size={24} />
+
+              {/* Phone */}
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
+                  <Phone size={22} />
                 </div>
+
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-500">Phone / WhatsApp</h4>
-                  <p className="font-bold text-gray-900">+91 98765 43210</p>
+                  <h4 className="text-sm font-semibold text-gray-500">
+                    Phone / WhatsApp
+                  </h4>
+
+                  <a
+                    href="tel:+919876543210"
+                    className="font-bold text-gray-900 hover:text-blue-600 transition"
+                  >
+                    +91 98765 43210
+                  </a>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                  <Mail size={24} />
+              {/* Email */}
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
+                  <Mail size={22} />
                 </div>
+
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-500">Email Inquiry</h4>
-                  <p className="font-bold text-gray-900">info@brandwakers.com</p>
+                  <h4 className="text-sm font-semibold text-gray-500">
+                    Email Inquiry
+                  </h4>
+
+                  <a
+                    href="mailto:info@brandwakers.com"
+                    className="font-bold text-gray-900 hover:text-blue-600 transition"
+                  >
+                    info@brandwakers.com
+                  </a>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                  <MapPin size={24} />
+              {/* Location */}
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
+                  <MapPin size={22} />
                 </div>
+
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-500">Main Office</h4>
-                  <p className="font-bold text-gray-900">Delhi NCR & Mumbai Fabrication Units</p>
+                  <h4 className="text-sm font-semibold text-gray-500">
+                    Service Locations
+                  </h4>
+
+                  <p className="font-bold text-gray-900">
+                    Delhi NCR & Mumbai
+                  </p>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    Exhibition projects across India
+                  </p>
                 </div>
               </div>
+
+              {/* WhatsApp CTA */}
+              <a
+                href="https://api.whatsapp.com/send/?phone=919876543210&text&type=phone_number&app_absent=0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all"
+              >
+                <MessageCircle size={18} />
+                Chat on WhatsApp
+              </a>
             </div>
           </div>
 
-          <div className="bg-gray-50 p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm">
+          {/* FORM */}
+          <div className="bg-gray-50 p-6 sm:p-10 rounded-3xl border border-gray-100 shadow-sm">
+
             {isSubmitted ? (
-              <div className="text-center py-12 space-y-4">
-                <CheckCircle2 className="mx-auto text-green-500 h-16 w-16" />
-                <h3 className="text-2xl font-bold text-gray-900">Inquiry Received!</h3>
-                <p className="text-gray-600">Our exhibition design team will contact you shortly with 3D concepts.</p>
-                <button 
-                  onClick={() => setIsSubmitted(false)}
-                  className="mt-4 bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold"
+              /* SUCCESS STATE */
+              <div className="text-center py-12">
+                <div className="flex justify-center">
+                  <div className="p-4 bg-green-50 rounded-full">
+                    <CheckCircle2 className="text-green-600 h-14 w-14" />
+                  </div>
+                </div>
+
+                <h3 className="text-2xl font-bold text-gray-900 mt-6">
+                  Inquiry Received!
+                </h3>
+
+                <p className="text-gray-600 mt-3 leading-relaxed">
+                  Thank you for sharing your exhibition
+                  requirements. Our team will contact you
+                  shortly.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setIsSubmitted(false)
+                  }
+                  className="mt-7 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold text-sm transition"
                 >
-                  Submit Another Project
+                  Submit Another Requirement
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-5"
+              >
+
+                {/* FORM HEADER */}
+                <div className="mb-2">
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    Tell Us About Your Project
+                  </h3>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    Fill in the details below and our team
+                    will get in touch with you.
+                  </p>
+                </div>
+
+                {/* ERROR */}
+                {error && (
+                  <div
+                    className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm"
+                    role="alert"
+                  >
+                    {error}
+                  </div>
+                )}
+
+                {/* NAME */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Your Name / Company</label>
-                  {/* <input 
-                    type="text" required placeholder="Company Name / Contact Person" 
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                  /> */}
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-semibold text-gray-700 mb-1.5"
+                  >
+                    Your Name / Company
+                  </label>
 
                   <input
-                     type="text"
-                     required
-                     placeholder="Company Name / Contact Person"
-                     value={formData.name}
-                     onChange={(e) =>
-                     setFormData({
-                      ...formData,
-                     name: e.target.value,
-                        })
-                     }
-                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                    />
+                    id="name"
+                    type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Company Name / Contact Person"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
+                  />
                 </div>
 
+                {/* EMAIL + PHONE */}
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-                      <input
-                        type="email"
-                         required
-                        placeholder="name@company.com"
-                       value={formData.email}
-                       onChange={(e) =>
-                        setFormData({
-                       ...formData,
-                      email: e.target.value,
-                        })
-                        }
-                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                      />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
-                    {/* <input type="tel" required placeholder="+91 00000 00000" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" /> */}
 
-                         <input
-                          type="tel"
-                          required
-                          placeholder="+91 00000 00000"
-                          value={formData.phone}
-                          onChange={(e) =>
-                          setFormData({
-                          ...formData,
-                          phone: e.target.value,
-                          })
-                           }
-                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                         />
-                  </div>  
-                </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-semibold text-gray-700 mb-1.5"
+                    >
+                      Email
+                    </label>
 
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Expo / Event Name</label>
-                    {/* <input type="text" placeholder="e.g. Auto Expo 2026" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" /> */}
-                     <input
-                       type="text"
-                       placeholder="e.g. Auto Expo 2026"
-                       value={formData.expoName}
-                       onChange={(e) =>
-                       setFormData({
-                       ...formData,
-                       expoName: e.target.value,
-                        })
-                        }
-                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                        />
-                   
-                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Stall Size (e.g. 6x3m)</label>
-                    {/* <input type="text" placeholder="e.g. 18 Sq Meters" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white" /> */}
                     <input
-                      type="text"
-                      placeholder="e.g. 18 Sq Meters"
-                      value={formData.stallSize}
-                      onChange={(e) =>
-                      setFormData({
-                      ...formData,
-                      stallSize: e.target.value,
-                       })
-                        }
-                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                      />
+                      id="email"
+                      type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="name@company.com"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
+                    />
                   </div>
+
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-semibold text-gray-700 mb-1.5"
+                    >
+                      Phone Number
+                    </label>
+
+                    <input
+                      id="phone"
+                      type="tel"
+                      name="phone"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+91 00000 00000"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
+                    />
+                  </div>
+
                 </div>
 
+                {/* EXPO + STALL SIZE */}
+                <div className="grid sm:grid-cols-2 gap-4">
+
+                  <div>
+                    <label
+                      htmlFor="expoName"
+                      className="block text-sm font-semibold text-gray-700 mb-1.5"
+                    >
+                      Expo / Event Name
+                    </label>
+
+                    <input
+                      id="expoName"
+                      type="text"
+                      name="expoName"
+                      value={formData.expoName}
+                      onChange={handleChange}
+                      placeholder="e.g. Auto Expo"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="stallSize"
+                      className="block text-sm font-semibold text-gray-700 mb-1.5"
+                    >
+                      Stall Size
+                    </label>
+
+                    <input
+                      id="stallSize"
+                      type="text"
+                      name="stallSize"
+                      value={formData.stallSize}
+                      onChange={handleChange}
+                      placeholder="e.g. 6 x 3 meters"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition"
+                    />
+                  </div>
+
+                </div>
+
+                {/* MESSAGE */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Specific Requirements</label>
-                  {/* <textarea rows="3" placeholder="Mention budget, sides open, LED screen requirement, etc." className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"></textarea> */}
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-semibold text-gray-700 mb-1.5"
+                  >
+                    Project Requirements
+                  </label>
+
                   <textarea
-                   rows="3"
-                   placeholder="Mention budget, sides open, LED screen requirement, etc."
-                   value={formData.message}
-                   onChange={(e) =>
-                   setFormData({
-                    ...formData,
-                   message: e.target.value,
-                   })
-                   }
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-600 bg-white"
-                  ></textarea>
+                    id="message"
+                    name="message"
+                    rows="4"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell us about your stall design, branding, LED screen, meeting room, open sides, budget, etc."
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white transition resize-none"
+                  />
                 </div>
 
-                <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition flex items-center justify-center gap-2">
-                  Get Free 3D Design Quote <Send size={18} />
+                {/* SUBMIT */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    "Submitting..."
+                  ) : (
+                    <>
+                      Get Free Project Consultation
+                      <Send size={18} />
+                    </>
+                  )}
                 </button>
+
+                <p className="text-center text-xs text-gray-400">
+                  Your details will be used only to respond
+                  to your exhibition inquiry.
+                </p>
+
               </form>
             )}
           </div>
-
         </div>
       </div>
     </section>

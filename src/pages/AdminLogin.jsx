@@ -70,7 +70,7 @@ const AdminLogin = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#f5f5f5",
+        background: "#1a1a2e",
         padding: "20px",
       }}
     >
@@ -78,7 +78,7 @@ const AdminLogin = () => {
         style={{
           width: "100%",
           maxWidth: "420px",
-          background: "#fff",
+          background: "#eef2f3",
           padding: "35px",
           borderRadius: "16px",
           boxShadow: "0 10px 30px rgba(0,0,0,0.08)",

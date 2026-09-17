@@ -3,6 +3,7 @@ const express = require("express");
 const {
   createSubscriber,
   getSubscribers,
+  deleteSubscriber,
 } = require("../controllers/subscriber.controller");
 
 const {
@@ -15,7 +16,11 @@ const router = express.Router();
 // Public - newsletter subscribe
 router.post("/", createSubscriber);
 
-// Admin only - subscribers dekh sakta hai
+// Admin only - subscribers 
 router.get("/", protect, adminOnly, getSubscribers);
+
+// Admin only -  subscriber delete
+router.delete("/:id", protect, adminOnly, deleteSubscriber);
+
 
 module.exports = router;

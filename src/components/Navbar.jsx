@@ -1,69 +1,130 @@
-import React, { useState } from 'react';
-import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Menu,
+  X,
+  ArrowRight,
+  Phone,
+} from "lucide-react";
+
+const navLinks = [
+  { label: "Home", href: "#home" },
+  { label: "About Us", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Our Work", href: "#portfolio" },
+  { label: "Process", href: "#process" },
+];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
-    <header className="fixed w-full top-0 z-50">
-      {/* Top Announcement / Info Bar */}   
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
+      <nav
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        aria-label="Main navigation"
+      >
+        <div className="h-20 flex items-center justify-between">
+          {/* LOGO */}
+          <a
+            href="#home"
+            onClick={closeMenu}
+            className="flex items-center shrink-0"
+            aria-label="Brand Wakers Home"
+          >
+            <span className="text-2xl sm:text-3xl font-black tracking-tight">
+              <span className="text-blue-600">BRAND</span>
+              <span className="text-slate-900"> WAKERS</span>
+            </span>
+          </a>
 
-      {/* <div className="bg-slate-950 text-gray-300 text-xs py-2 px-4 hidden md:block border-b border-gray-800">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5"><Phone size={13} className="text-blue-400" /> +91 98765 43210</span>
-            <span className="flex items-center gap-1.5"><Mail size={13} className="text-blue-400" /> info@brandwakers.com</span>
-            <span className="flex items-center gap-1.5"><MapPin size={13} className="text-blue-400" /> Delhi NCR | Mumbai | Bangalore</span>
-          </div>
-          <div className="font-semibold text-blue-400 uppercase tracking-wider text-[10px]">
-            India's Premier Exhibition & Expo Agency
-          </div>
-        </div>
-      </div> */}
+          {/* DESKTOP NAVIGATION */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="relative text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors duration-200 group"
+              >
+                {link.label}
 
-      {/* Main Navbar */}    
-      <nav className="bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-19 items-center">
-            
-            {/* Logo */}
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <span className="text-3xl font-black tracking-wider text-blue-600">BRAND</span>
-              <span className="text-3xl font-black tracking-wider text-slate-900">WAKERS</span>
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-700">
-              <a href="#home" className="hover:text-blue-600 transition">Home</a>
-              <a href="#about" className="hover:text-blue-600 transition">About Us</a>
-              <a href="#services" className="hover:text-blue-600 transition">Services</a>
-              <a href="#portfolio" className="hover:text-blue-600 transition">Our Work</a>
-              <a href="#process" className="hover:text-blue-600 transition">Process</a>
-              <a href="#contact" className="bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition shadow-md shadow-blue-500/20">
-                Book Expo Stall
+                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full" />
               </a>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center">
-              <button onClick={() => setIsOpen(!isOpen)} className="text-slate-800 p-2">
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
-            </div>
+            ))}
           </div>
+
+          {/* DESKTOP CTA */}
+          <div className="hidden lg:flex items-center gap-3">
+            <a
+              href="tel:+919876543210"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors"
+              aria-label="Call Brand Wakers"
+            >
+              <Phone size={17} />
+              <span>Call Us</span>
+            </a>
+
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 transition-all duration-200"
+            >
+              Book Expo Stall
+              <ArrowRight size={17} />
+            </a>
+          </div>
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((current) => !current)}
+            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-200 text-slate-800 hover:bg-slate-50 transition"
+            aria-label={
+              isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+            }
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? <X size={23} /> : <Menu size={23} />}
+          </button>
         </div>
 
-        {/* Mobile Navigation Drawer */}
-        {isOpen && (
-          <div className="md:hidden bg-white border-b border-gray-200 px-6 pt-3 pb-6 space-y-3 font-medium text-gray-700">
-            <a href="#home" onClick={() => setIsOpen(false)} className="block py-2 border-b border-gray-50">Home</a>
-            <a href="#about" onClick={() => setIsOpen(false)} className="block py-2 border-b border-gray-50">About Us</a>
-            <a href="#services" onClick={() => setIsOpen(false)} className="block py-2 border-b border-gray-50">Services</a>
-            <a href="#portfolio" onClick={() => setIsOpen(false)} className="block py-2 border-b border-gray-50">Our Work</a>
-            <a href="#process" onClick={() => setIsOpen(false)} className="block py-2 border-b border-gray-50">Process</a>
-            <a href="#contact" onClick={() => setIsOpen(false)} className="block text-center bg-blue-600 text-white px-5 py-3 rounded-full hover:bg-blue-700 mt-4 font-semibold">
-              Book Expo Stall
-            </a>
+        {/* MOBILE MENU */}
+        {isMenuOpen && (
+          <div className="lg:hidden border-t border-slate-100 py-4">
+            <div className="flex flex-col">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={closeMenu}
+                  className="px-3 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition"
+                >
+                  {link.label}
+                </a>
+              ))}
+
+              <div className="mt-3 pt-4 border-t border-slate-100 space-y-3">
+                <a
+                  href="tel:+919876543210"
+                  onClick={closeMenu}
+                  className="flex items-center justify-center gap-2 w-full border border-slate-200 text-slate-800 px-4 py-3 rounded-xl text-sm font-semibold hover:bg-slate-50 transition"
+                >
+                  <Phone size={17} />
+                  Call Us
+                </a>
+
+                <a
+                  href="#contact"
+                  onClick={closeMenu}
+                  className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl text-sm font-bold transition"
+                >
+                  Book Expo Stall
+                  <ArrowRight size={17} />
+                </a>
+              </div>
+            </div>
           </div>
         )}
       </nav>

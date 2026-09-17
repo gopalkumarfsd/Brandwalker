@@ -1,389 +1,561 @@
- import React, { useState } from "react";
+import React from "react";
 import {
-  Phone,
+  ArrowRight,
   Mail,
+  Phone,
   MapPin,
-  ArrowUp,
-  Send,
-  ChevronRight,
-  CheckCircle2,
 } from "lucide-react";
 
 import { subscribeEmail } from "../services/api";
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
+  const [email, setEmail] = React.useState("");
+  const [status, setStatus] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
-  // =========================
-  // Newsletter Subscribe
-  // =========================
   const handleSubscribe = async (e) => {
     e.preventDefault();
 
-    if (!email.trim()) {
-      alert("Please enter your email");
-      return;
-    }
+    if (!email.trim()) return;
 
     try {
-      const data = await subscribeEmail(email);
+      setLoading(true);
+      setStatus("");
 
-      console.log("Subscriber Saved:", data);
+      await subscribeEmail(email);
 
-      setSubscribed(true);
+      setStatus("Thanks! You're subscribed.");
       setEmail("");
-
-      setTimeout(() => {
-        setSubscribed(false);
-      }, 3000);
     } catch (error) {
-      console.error("Subscribe Error:", error);
-      alert(error.message);
+      setStatus(
+        error.message ||
+          "Unable to subscribe. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
-  };
-
-  // =========================
-  // Scroll To Top
-  // =========================
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
   };
 
   return (
-    <footer className="bg-slate-950 text-gray-400 pt-12 pb-8 border-t border-slate-800 font-sans w-full">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+    <footer className="bg-slate-950 text-white">
 
-        {/* =========================================
-            1. Main 4-Column Footer Layout
-        ========================================== */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pb-12 border-b border-slate-800/80">
+      {/* =====================================
+          TOP CTA
+      ====================================== */}
 
-          {/* =========================================
-              Column 1: Brand Info & Social
-          ========================================== */}
-          <div className="space-y-4">
+      <div className="border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+          <div className="bg-blue-600 rounded-3xl px-6 sm:px-10 lg:px-14 py-10 sm:py-12">
 
-            {/* Brand */}
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={scrollToTop}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+
+              <div className="max-w-2xl">
+                <p className="text-blue-100 text-xs font-bold uppercase tracking-[0.2em]">
+                  Ready for your next exhibition?
+                </p>
+
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2 leading-tight">
+                  Let's build a stall that gets noticed.
+                </h2>
+
+                <p className="text-blue-100 mt-3 text-sm sm:text-base leading-relaxed">
+                  Share your exhibition requirements with our
+                  team and let's plan your project from design
+                  to execution.
+                </p>
+              </div>
+
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center gap-2 bg-white text-blue-700 hover:bg-blue-50 px-6 py-3.5 rounded-xl font-bold text-sm transition-all shrink-0"
+              >
+                Start Your Project
+                <ArrowRight size={18} />
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* =====================================
+          MAIN FOOTER
+      ====================================== */}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+
+          {/* =================================
+              BRAND
+          ================================== */}
+
+          <div className="lg:col-span-4">
+
+            <a
+              href="#home"
+              className="inline-block text-2xl sm:text-3xl font-black tracking-tight"
             >
-              <span className="text-xl font-black tracking-wider text-blue-500">
+              <span className="text-blue-500">
                 BRAND
               </span>
 
-              <span className="text-xl font-black tracking-wider text-white">
-                WAKERS
+              <span className="text-white">
+                {" "}WAKERS
               </span>
-            </div>
+            </a>
 
-            {/* Description */}
-            <p className="text-xs text-gray-400 leading-relaxed">
-              India's premier turnkey exhibition stall designing & fabrication
-              agency. Delivering custom 3D trade show booths and pavilions
-              nationwide.
+            <p className="text-slate-400 mt-5 leading-relaxed text-sm max-w-sm">
+              Exhibition stall design, 3D visualization,
+              fabrication and complete event execution for
+              brands across India.
             </p>
 
-            {/* =========================================
-                Social Media
-            ========================================== */}
-            <div className="flex gap-2.5 pt-1">
+            {/* =================================
+                SOCIAL MEDIA
+            ================================== */}
 
-              {/* Facebook */}
+            <div className="flex flex-wrap items-center gap-3 mt-7">
+
+              {/* FACEBOOK */}
+
               <a
                 href="https://www.facebook.com/expobrandwakers/"
+                aria-label="Facebook"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-slate-900 hover:bg-blue-600 hover:text-white rounded-lg text-gray-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
               >
                 <svg
-                  className="w-3.5 h-3.5 fill-current"
+                  width="19"
+                  height="19"
                   viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  <path d="M14 8h3V4h-3c-3.31 0-5 1.69-5 5v3H6v4h3v8h4v-8h3.2l.8-4H13V9c0-.67.33-1 1-1z" />
                 </svg>
               </a>
 
-              {/* Instagram */}
+              {/* INSTAGRAM */}
+
               <a
                 href="https://www.instagram.com/expobrandwakers/"
+                aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-slate-900 hover:bg-blue-600 hover:text-white rounded-lg text-gray-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
               >
                 <svg
-                  className="w-3.5 h-3.5 fill-current"
+                  width="19"
+                  height="19"
                   viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  aria-hidden="true"
                 >
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.28-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.07 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="5"
+                  />
+
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="4"
+                  />
+
+                  <circle
+                    cx="17.5"
+                    cy="6.5"
+                    r="1"
+                    fill="currentColor"
+                    stroke="none"
+                  />
                 </svg>
               </a>
 
-              {/* LinkedIn */}
+              {/* LINKEDIN */}
+
               <a
                 href="https://www.linkedin.com/company/expobrandwakers/"
+                aria-label="LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-slate-900 hover:bg-blue-600 hover:text-white rounded-lg text-gray-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
               >
                 <svg
-                  className="w-3.5 h-3.5 fill-current"
+                  width="19"
+                  height="19"
                   viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  <path d="M5 3.5A2.5 2.5 0 1 1 5 8.5 2.5 2.5 0 0 1 5 3.5ZM3 10h4v11H3V10Zm6 0h3.8v1.5h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-4.8c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.84 1.25-1.84 2.54V21H9V10Z" />
                 </svg>
               </a>
 
-              {/* YouTube */}
+              {/* YOUTUBE */}
+
               <a
                 href="https://www.youtube.com/@expobrandwakers"
+                aria-label="YouTube"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-slate-900 hover:bg-blue-600 hover:text-white rounded-lg text-gray-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
               >
                 <svg
-                  className="w-3.5 h-3.5 fill-current"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-                  <path d="M23.498 6.186a2.99 2.99 0 0 0-2.104-2.117C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.394.569A2.99 2.99 0 0 0 .502 6.186C0 8.08 0 12 0 12s0 3.92.502 5.814a2.99 2.99 0 0 0 2.104 2.117C4.495 20.5 12 20.5 12 20.5s7.505 0 9.394-.569a2.99 2.99 0 0 0 2.104-2.117C24 15.92 24 12 24 12s0-3.92-.502-5.814zM9.6 15.5v-7l6.4 3.5-6.4 3.5z" />
+                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.12C19.55 3.5 12 3.5 12 3.5s-7.55 0-9.4.58A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.12c1.85.58 9.4.58 9.4.58s7.55 0 9.4-.58a3 3 0 0 0 2.1-2.12A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8ZM9.6 15.9V8.1l6.5 3.9-6.5 3.9Z" />
                 </svg>
               </a>
 
-              {/* Pinterest */}
+              {/* PINTEREST */}
+
               <a
                 href="https://in.pinterest.com/expobrandwakers/"
+                aria-label="Pinterest"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-slate-900 hover:bg-blue-600 hover:text-white rounded-lg text-gray-400 transition"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all"
               >
                 <svg
-                  className="w-3.5 h-3.5 fill-current"
+                  width="19"
+                  height="19"
                   viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
                 >
-                  <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.429 7.618 11.165-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.963 1.407-5.963s-.359-.719-.359-1.781c0-1.669.968-2.916 2.171-2.916 1.024 0 1.518.769 1.518 1.69 0 1.03-.655 2.568-.994 3.995-.283 1.195.6 2.169 1.777 2.169 2.133 0 3.773-2.249 3.773-5.496 0-2.872-2.065-4.882-5.013-4.882-3.414 0-5.416 2.561-5.416 5.208 0 1.031.397 2.138.893 2.738.098.119.112.223.083.344-.091.378-.293 1.195-.333 1.363-.052.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.162 0 7.398 2.966 7.398 6.931 0 4.136-2.608 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.85c-.27 1.04-1.002 2.342-1.492 3.137C9.078 23.799 10.52 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
+                  <path d="M12 2C6.48 2 3 5.58 3 10.12c0 3.1 1.74 5.84 4.45 6.87-.05-.59-.01-1.3.15-1.97l1.03-4.34s-.26-.53-.26-1.31c0-1.23.71-2.15 1.6-2.15.75 0 1.11.56 1.11 1.23 0 .75-.48 1.88-.73 2.93-.21.88.44 1.6 1.31 1.6 1.57 0 2.77-1.66 2.77-4.06 0-2.12-1.52-3.6-3.69-3.6-2.51 0-3.98 1.88-3.98 3.82 0 .76.29 1.57.66 2.01.07.08.08.15.06.24l-.25 1.03c-.04.17-.14.2-.32.12-1.2-.56-1.95-2.32-1.95-3.74 0-3.05 2.22-5.85 6.4-5.85 3.36 0 5.97 2.39 5.97 5.58 0 3.33-2.1 6.01-5.01 6.01-.98 0-1.9-.51-2.22-1.11l-.6 2.28c-.22.83-.82 1.87-1.22 2.5.92.28 1.89.43 2.9.43 5.52 0 9-3.58 9-8.12C21 5.58 17.52 2 12 2Z" />
                 </svg>
               </a>
 
             </div>
           </div>
 
-          {/* =========================================
-              Column 2: Expo Services
-          ========================================== */}
-          <div>
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-l-2 border-blue-500 pl-2.5">
-              Expo Services
-            </h4>
+          {/* =================================
+              SERVICES
+          ================================== */}
 
-            <ul className="space-y-2 text-xs">
-              {[
-                "Custom Exhibition Stalls",
-                "3D Stall Design & Rendering",
-                "Double-Decker Pavilions",
-                "Modular & Portable Booths",
-                "On-Site Exhibition Setup",
-                "AV & Structural LED Walls",
-              ].map((service, index) => (
-                <li key={index}>
-                  <a
-                    href="#services"
-                    className="hover:text-blue-400 transition flex items-center gap-1 group"
-                  >
-                    <ChevronRight
-                      size={12}
-                      className="text-blue-500 opacity-0 group-hover:opacity-100 transition shrink-0"
-                    />
+          <div className="lg:col-span-2">
 
-                    <span>{service}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <h3 className="text-sm font-bold uppercase tracking-wider">
+              Services
+            </h3>
 
-          {/* =========================================
-              Column 3: Major Venues
-          ========================================== */}
-          <div>
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-l-2 border-blue-500 pl-2.5">
-              Major Venues Covered
-            </h4>
+            <ul className="mt-5 space-y-3 text-sm">
 
-            <ul className="space-y-2 text-xs">
-              {[
-                "Pragati Maidan (New Delhi)",
-                "IEML (Greater Noida)",
-                "BEC / NESCO (Mumbai)",
-                "BIEC (Bangalore)",
-                "HITEX Centre (Hyderabad)",
-                "Helipad Centre (Gandhinagar)",
-              ].map((venue, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 text-gray-400"
+              <li>
+                <a
+                  href="#services"
+                  className="text-slate-400 hover:text-white transition"
                 >
-                  <span className="w-1 h-1 bg-blue-500 rounded-full shrink-0"></span>
-                  <span>{venue}</span>
-                </li>
-              ))}
+                  Custom Exhibition Stalls
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#services"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  3D Stall Design
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#services"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Double-Decker Stalls
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#services"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Modular Booths
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#services"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  LED & AV Solutions
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#services"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Installation & Logistics
+                </a>
+              </li>
+
             </ul>
           </div>
 
-          {/* =========================================
-              Column 4: Contact Info
-          ========================================== */}
-          <div>
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-l-2 border-blue-500 pl-2.5">
-              Contact & Units
-            </h4>
+          {/* =================================
+              COMPANY
+          ================================== */}
 
-            <div className="space-y-3 text-xs">
+          <div className="lg:col-span-2">
 
-              {/* Google Maps Location */}
+            <h3 className="text-sm font-bold uppercase tracking-wider">
+              Company
+            </h3>
+
+            <ul className="mt-5 space-y-3 text-sm">
+
+              <li>
+                <a
+                  href="#about"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  About Us
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#portfolio"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Our Work
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#process"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Our Process
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#contact"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Contact
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="#"
+                  className="text-slate-400 hover:text-white transition"
+                >
+                  Terms & Conditions
+                </a>
+              </li>
+
+            </ul>
+          </div>
+
+          {/* =================================
+              CONTACT
+          ================================== */}
+
+          <div className="lg:col-span-4">
+
+            <h3 className="text-sm font-bold uppercase tracking-wider">
+              Contact Us
+            </h3>
+
+            <div className="mt-5 space-y-4">
+
+              {/* PHONE */}
+
               <a
-                href="https://maps.app.goo.gl/hiHRt3FhNPQhs2A28?g_st=aw"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-2.5 hover:text-blue-400 transition"
+                href="tel:+919876543210"
+                className="flex items-start gap-3 group"
               >
-                <MapPin
-                  size={15}
-                  className="text-blue-500 shrink-0 mt-0.5"
-                />
+                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
+                  <Phone
+                    size={17}
+                    className="text-blue-400"
+                  />
+                </div>
 
-                <span>
-                  Delhi NCR (HQ), Mumbai & Bangalore Facilities
-                </span>
+                <div>
+                  <p className="text-xs text-slate-500">
+                    Phone / WhatsApp
+                  </p>
+
+                  <p className="text-sm font-semibold text-slate-200 group-hover:text-blue-400 transition">
+                    +91 98765 43210
+                  </p>
+                </div>
               </a>
 
-              {/* Phone */}
-              <div className="flex items-center gap-2.5">
-                <Phone
-                  size={15}
-                  className="text-blue-500 shrink-0"
-                />
+              {/* EMAIL */}
 
-                <span className="text-white font-semibold">
-                  +91 98765 43210
-                </span>
-              </div>
+              <a
+                href="mailto:info@brandwakers.com"
+                className="flex items-start gap-3 group"
+              >
+                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
+                  <Mail
+                    size={17}
+                    className="text-blue-400"
+                  />
+                </div>
 
-              {/* Email */}
-              <div className="flex items-center gap-2.5">
-                <Mail
-                  size={15}
-                  className="text-blue-500 shrink-0"
-                />
+                <div>
+                  <p className="text-xs text-slate-500">
+                    Email
+                  </p>
 
-                <span className="text-gray-300">
-                  info@brandwakers.com
-                </span>
+                  <p className="text-sm font-semibold text-slate-200 group-hover:text-blue-400 transition">
+                    info@brandwakers.com
+                  </p>
+                </div>
+              </a>
+
+              {/* LOCATION */}
+
+              <div className="flex items-start gap-3">
+
+                <div className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
+                  <MapPin
+                    size={17}
+                    className="text-blue-400"
+                  />
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">
+                    Service Locations
+                  </p>
+
+                  <p className="text-sm font-semibold text-slate-200">
+                    Delhi NCR, Mumbai & Bangalore
+                  </p>
+
+                  <p className="text-xs text-slate-500 mt-1">
+                    Projects across India
+                  </p>
+                </div>
+
               </div>
 
             </div>
           </div>
-
         </div>
 
-        {/* =========================================
-            2. Newsletter Subscription
-        ========================================== */}
-        <div className="my-8 bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* =====================================
+            NEWSLETTER
+        ====================================== */}
 
-          <div className="text-center md:text-left">
+        <div className="mt-14 pt-8 border-t border-white/10">
 
-            <span className="text-[10px] uppercase font-bold text-blue-400 tracking-wider">
-              Exhibition Newsletter
-            </span>
+          <div className="grid lg:grid-cols-2 gap-6 items-center">
 
-            <p className="text-xs text-white font-medium mt-0.5">
-              Get latest 3D stall design trends & expo tips directly to your
-              mail.
+            <div>
+              <h3 className="text-lg font-bold">
+                Get exhibition updates
+              </h3>
+
+              <p className="text-sm text-slate-400 mt-1">
+                Subscribe for exhibition tips, design ideas
+                and project updates.
+              </p>
+            </div>
+
+            <form
+              onSubmit={handleSubscribe}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setStatus("");
+                }}
+                placeholder="Enter your email address"
+                className="flex-1 min-w-0 bg-white/5 border border-white/10 text-white placeholder:text-slate-500 px-4 py-3 rounded-xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+              />
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white px-5 py-3 rounded-xl font-bold text-sm transition"
+              >
+                {loading
+                  ? "Subscribing..."
+                  : "Subscribe"}
+
+                {!loading && (
+                  <ArrowRight size={17} />
+                )}
+              </button>
+
+            </form>
+          </div>
+
+          {status && (
+            <p className="text-sm text-slate-400 mt-3">
+              {status}
+            </p>
+          )}
+
+        </div>
+      </div>
+
+      {/* =====================================
+          BOTTOM BAR
+      ====================================== */}
+
+      <div className="border-t border-white/10">
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+
+            <p>
+              © {new Date().getFullYear()} Brand Wakers.
+              All rights reserved.
+            </p>
+
+            <p>
+              Exhibition Stall Design & Fabrication
             </p>
 
           </div>
-
-          <div className="w-full md:w-auto shrink-0">
-
-            {/* Success Message */}
-            {subscribed ? (
-              <div className="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-blue-500/30">
-                <CheckCircle2 size={16} />
-                Subscribed Successfully!
-              </div>
-            ) : (
-
-              /* Subscribe Form */
-              <form
-                onSubmit={handleSubscribe}
-                className="flex gap-2 w-full md:w-auto"
-              >
-
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter Corporate Email"
-                  className="px-3.5 py-2 text-xs rounded-xl bg-slate-950 text-white placeholder-gray-500 border border-slate-800 focus:outline-none focus:border-blue-500 w-full md:w-64"
-                  required
-                />
-
-                <button
-                  type="submit"
-                  className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1.5 shrink-0"
-                >
-                  Subscribe
-                  <Send size={12} />
-                </button>
-
-              </form>
-            )}
-
-          </div>
         </div>
-
-        {/* =========================================
-            3. Bottom Bar
-        ========================================== */}
-        <div className="flex flex-col sm:flex-row justify-between items-center text-[11px] text-gray-500 gap-3 pt-2">
-
-          <p>
-            ©️ {new Date().getFullYear()} Brandwakers Exhibition Services.
-            All rights reserved.
-          </p>
-
-          <div className="flex items-center gap-5">
-
-            <a
-              href="#"
-              className="hover:text-gray-300 transition"
-            >
-              Privacy Policy
-            </a>
-
-            <a
-              href="#"
-              className="hover:text-gray-300 transition"
-            >
-              Terms of Service
-            </a>
-
-            <button
-              onClick={scrollToTop}
-              className="flex items-center gap-1 text-blue-400 hover:text-white transition font-medium bg-slate-900 px-3 py-1 rounded-full border border-slate-800"
-            >
-              Back to top
-              <ArrowUp size={12} />
-            </button>
-
-          </div>
-        </div>
-
       </div>
+
     </footer>
   );
 }

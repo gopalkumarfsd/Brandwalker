@@ -9,7 +9,7 @@ const createInquiry = async (req, res) => {
       expoName,
       stallSize,
       message,
-    } = req.body; 
+    } = req.body;
 
     if (!name || !email || !phone) {
       return res.status(400).json({
@@ -33,14 +33,14 @@ const createInquiry = async (req, res) => {
       data: inquiry,
     });
   } catch (error) {
-    console.error(error);        
+    console.error("Create Inquiry Error:", error);
 
     res.status(500).json({
       success: false,
       message: "Server error",
     });
   }
-}; 
+};
 
 const getInquiries = async (req, res) => {
   try {
@@ -48,17 +48,48 @@ const getInquiries = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: inquiries, 
+      data: inquiries,
     });
   } catch (error) {
+    console.error("Get Inquiries Error:", error);
+
     res.status(500).json({
       success: false,
       message: "Server error",
-    }); 
+    });
+  }
+};
+
+// Admin only - inquiry delete
+const deleteInquiry = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const inquiry = await Inquiry.findByIdAndDelete(id);
+
+    if (!inquiry) {
+      return res.status(404).json({
+        success: false,
+        message: "Inquiry not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Inquiry deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete Inquiry Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
 module.exports = {
   createInquiry,
   getInquiries,
+  deleteInquiry,
 };

@@ -6,6 +6,7 @@ import {
   Send,
   CheckCircle2,
 } from "lucide-react";
+import { submitInquiry } from "../services/api";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ 
@@ -13,26 +14,11 @@ export default function Contact() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const response = await fetch(
-      "http://localhost:5001/api/inquiries",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Something went wrong");
-    }
+    const data = await submitInquiry(formData);
 
     console.log("Inquiry saved:", data);
 
@@ -48,9 +34,10 @@ export default function Contact() {
     });
   } catch (error) {
     console.error("Submit Error:", error);
-    alert("Unable to submit inquiry. Please try again.");
+    alert(error.message);
   }
 };
+  
   return (
     <section id="contact" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

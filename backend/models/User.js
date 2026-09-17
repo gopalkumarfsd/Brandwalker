@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const inquirySchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -11,28 +11,21 @@ const inquirySchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
+      lowercase: true,
       trim: true,
     },
 
-    phone: {
+    password: {
       type: String,
       required: true,
-      trim: true,   
+      minlength: 6,
     },
 
-    expoName: {
+    role: {
       type: String,
-      trim: true,
-    },
-
-    stallSize: {
-      type: String,
-      trim: true,
-    },
-
-    message: {
-      type: String, 
-      trim: true,
+      enum: ["user", "admin"],
+      default: "user",
     },
   },
   {
@@ -40,4 +33,4 @@ const inquirySchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Inquiry", inquirySchema);
+module.exports = mongoose.model("User", userSchema);

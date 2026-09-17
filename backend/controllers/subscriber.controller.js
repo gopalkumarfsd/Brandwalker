@@ -23,7 +23,7 @@ const Subscriber = require("../models/Subscriber");
 
        const subscriber = await Subscriber.create({
       email,
-      });  
+      });
 
          res.status(201).json({
       success: true,
@@ -48,8 +48,8 @@ const Subscriber = require("../models/Subscriber");
 
     res.status(200).json({
       success: true,
-      data: subscribers,
-    });
+      data: subscribers,  
+    }); 
   } catch (error) {
     console.error(error);
 
@@ -63,5 +63,5 @@ const Subscriber = require("../models/Subscriber");
 
  module.exports = {
   createSubscriber,
-  getSubscribers,
+  getSubscribers, 
 };   
